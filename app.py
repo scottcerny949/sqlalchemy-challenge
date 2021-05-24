@@ -50,10 +50,14 @@ def precipitation():
 
     session.close()
 
-    all_names = list(np.ravel(results))
+    all_precipitation = []
+    for date, prcp in results:
+        precipitation_dict = {}
+        precipitation_dict["date"] = date
+        precipitation_dict["prcp"] = prcp
+        all_precipitation.append(precipitation_dict)
 
-    return jsonify(all_names)
-
+    return jsonify(all_precipitation)
 
 @app.route("/api/v1.0/stations")
 def stations():
