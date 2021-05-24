@@ -61,11 +61,37 @@ def precipitation():
 
 @app.route("/api/v1.0/stations")
 def stations():
-    return "stations placeholder"
+    session = Session(engine)
+
+    results = session.query(Station.name, Station.station).all()
+
+    session.close()
+
+    all_stations = []
+    for name, station in results:
+        stations_dict = {}
+        stations_dict["name"] = name
+        stations_dict["station"] = station
+        all_stations.append(stations_dict)
+
+    return jsonify(all_stations)
 
 @app.route("/api/v1.0/tobs")
 def tobs():
-    return "tobs placeholder"
+    session = Session(engine)
+
+    results = session.query(Measurement.date, Measurement.tobs).filter(Measurement.station == "USC00519281").all()
+
+    session.close()
+
+    tobs2 = []
+    for date, tobs in results:
+        tobs_dict = {}
+        tobs_dict["date"] = date
+        tobs_dict["tobs"] = tobs
+        tobs2.append(tobs_dict)
+
+    return jsonify(tobs2)
 
 @app.route("/api/v1.0/<start>")
 def temps(start):
