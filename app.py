@@ -44,7 +44,16 @@ def welcome():
 
 @app.route("/api/v1.0/precipitation")
 def precipitation():
-    return "precip placeholder"
+    session = Session(engine)
+
+    results = session.query(Measurement.date, Measurement.prcp).all()
+
+    session.close()
+
+    all_names = list(np.ravel(results))
+
+    return jsonify(all_names)
+
 
 @app.route("/api/v1.0/stations")
 def stations():
